@@ -24,21 +24,44 @@
 
 ### Prerrequisitos
 
-- Docker Desktop (macOS M4 compatible)
+- Docker Desktop
 - 4GB+ RAM disponible
 - 2GB+ espacio en disco
 
-### Instalación Rápida
+### 🚀 Instalación Súper Rápida (Recomendada)
 
-1. **Clonar y construir el servicio:**
+**Opción 1: Docker con imagen pre-construida (Más rápido)**
 ```bash
+# Descargar docker-compose simple
+curl -O https://raw.githubusercontent.com/dmayab/docling-service/main/docker-compose.simple.yml
+
+# Ejecutar el servicio
+docker-compose -f docker-compose.simple.yml up -d
+
+# Verificar que esté funcionando
+curl http://localhost:8000/health
+```
+
+**Opción 2: Construcción local**
+```bash
+# Clonar el repositorio
+git clone https://github.com/dmayab/docling-service.git
 cd docling-service
+
+# Construir y ejecutar
 docker-compose up --build
 ```
 
-2. **Verificar instalación:**
+### Imagen Docker Oficial
+
+La imagen Docker está disponible en GitHub Container Registry:
 ```bash
-curl http://localhost:8000/health
+docker pull ghcr.io/dmayab/docling-service:latest
+```
+
+**Uso directo con Docker:**
+```bash
+docker run -p 8000:8000 -d ghcr.io/dmayab/docling-service:latest
 ```
 
 ### Configuración Avanzada
