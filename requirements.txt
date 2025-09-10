@@ -1,0 +1,23 @@
+# Docling y dependencias principales
+docling>=2.8.0
+
+# API Framework
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+python-multipart>=0.0.6
+
+# Modelos y utilidades
+pydantic>=2.5.0
+aiofiles>=23.2.0
+
+# OCR y procesamiento de imágenes
+pytesseract>=0.3.10
+Pillow>=10.1.0
+
+# PDF y documentos
+PyMuPDF>=1.23.0
+
+# Utilidades adicionales
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+httpx>=0.25.0

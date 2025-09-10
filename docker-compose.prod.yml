@@ -1,0 +1,58 @@
+# Docker Compose para instalación en NAS/servidores remotos
+version: '3.8'
+
+services:
+  docling-service:
+    image: dmayab/docling-service:latest
+    container_name: docling-service
+    ports:
+      - "${PORT:-8000}:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - ENVIRONMENT=production
+    volumes:
+      - docling-temp:/app/temp
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - docling-network
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+        reservations:
+          memory: 2G
+
+  # Nginx para proxy reverso (opcional)
+  nginx:
+    image: nginx:alpine
+    container_name: docling-nginx
+    ports:
+      - "${NGINX_HTTP_PORT:-80}:80"
+      - "${NGINX_HTTPS_PORT:-443}:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - docling-logs:/var/log/nginx
+    depends_on:
+      - docling-service
+    restart: unless-stopped
+    networks:
+      - docling-network
+    profiles:
+      - nginx
+
+networks:
+  docling-network:
+    driver: bridge
+
+volumes:
+  docling-temp:
+    driver: local
+  docling-logs:
+    driver: local
